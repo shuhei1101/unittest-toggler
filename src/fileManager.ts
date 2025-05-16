@@ -61,7 +61,13 @@ export class FileManager {
     public async openFile(filePath: string): Promise<vscode.TextEditor | undefined> {
         try {
             // ファイルが存在しない場合は空のファイルを作成
+            // createFile メソッドでは自動的にディレクトリも作成される
             if (!this.fileExists(filePath)) {
+                // ファイルの親ディレクトリを作成
+                const dirPath = path.dirname(filePath);
+                this.createDirectory(dirPath);
+                
+                // ファイルを作成
                 this.createFile(filePath);
             }
             
