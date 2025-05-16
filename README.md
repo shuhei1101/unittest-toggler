@@ -54,6 +54,10 @@ You can add settings like the following to your `settings.json`:
 
 ## Release Notes
 
+### 1.0.1
+
+- Bug-fix: Improved behavior in multi-workspace environments (correctly identifying the workspace to which the current file belongs)
+
 ### 1.0.0
 
 - Initial release
