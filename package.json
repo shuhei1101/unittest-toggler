@@ -1,0 +1,99 @@
+{
+  "name": "unittest-toggler",
+  "displayName": "UnitTest Toggler",
+  "description": "VSCode上でモジュールファイルとunittestファイルを簡単に切り替えるための拡張機能",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.100.0"
+  },
+  "categories": [
+    "Testing",
+    "Other"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "unittest-toggler.toggleUnitTest",
+        "title": "Toggle UnitTest"
+      },
+      {
+        "command": "unittest-toggler.generateUnitTest",
+        "title": "Generate UnitTest"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "unittest-toggler.toggleUnitTest",
+          "group": "unittest-toggler"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "unittest-toggler.generateUnitTest",
+          "group": "unittest-toggler",
+          "when": "explorerResourceIsFolder || resourceLangId"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "unittest-toggler.toggleUnitTest",
+        "key": "ctrl+shift+t",
+        "mac": "cmd+shift+t",
+        "when": "editorTextFocus"
+      }
+    ],
+    "configuration": {
+      "title": "UnitTest Toggler",
+      "properties": {
+        "unittestToggler.sourceDirectory": {
+          "type": "string",
+          "default": "src",
+          "description": "プロジェクトのソースコードディレクトリ名"
+        },
+        "unittestToggler.testDirectory": {
+          "type": "string",
+          "default": "tests",
+          "description": "プロジェクトのテストコードディレクトリ名"
+        },
+        "unittestToggler.testFileAffix": {
+          "type": "string",
+          "default": "test_",
+          "description": "テストファイル名に追加される接頭辞または接尾辞（例: test_、_test）"
+        },
+        "unittestToggler.isPrefix": {
+          "type": "boolean",
+          "default": true,
+          "description": "テストファイルの付加文字列を接頭辞として使用するかどうか。falseの場合は接尾辞として使用"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.100.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "eslint": "^9.25.1",
+    "typescript": "^5.8.3",
+    "ts-loader": "^9.5.2",
+    "webpack": "^5.99.7",
+    "webpack-cli": "^6.0.1",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.5.2"
+  }
+}

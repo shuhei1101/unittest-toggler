@@ -1,0 +1,12 @@
+out
+dist
+node_modules
+.vscode-test/
+*.vsix
+/output/*
+/log/*
+/cache/*
+.DS_Store
+tmp/*
+.env
+.coverage
