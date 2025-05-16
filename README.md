@@ -6,27 +6,27 @@ This extension allows you to easily toggle between module files and unittest fil
 ## Features / How to Use (機能 / 使い方)
 
 ### Easy switching between module files and test files
-- <img src='images/module_to_ut.gif' width='100%'>
+- <img src='https://raw.githubusercontent.com/shuhei1101/unittest-toggler/main/images/module_to_ut.gif' width='100%'>
 - Press `Ctrl+Shift+T` (macOS: `Cmd+Shift+T`)
 - Command-palette to `Toggle UnitTest`
 - Right-click to `Toggle UnitTest`
 
 ### Automatic generation of non-existent test files
-- <img src='images/new_ut_trim.gif' width='100%'>
+- <img src='https://raw.githubusercontent.com/shuhei1101/unittest-toggler/main/images/new_ut_trim.gif' width='100%'>
 - If test-file does not exist, create it!
 - If module-file does not exist, create it!
 - If folder does not exist, create it!
 
 ### Batch generation of test files for multiple source files
-- <img src='images/multiple_source.gif' width='100%'>
+- <img src='https://raw.githubusercontent.com/shuhei1101/unittest-toggler/main/images/multiple_source.gif' width='100%'>
 - Support for various programming languages
 
 ### Customizable settings to match your project structure
-- <img src='images/customizable_settings.gif' width='100%'>
+- <img src='https://raw.githubusercontent.com/shuhei1101/unittest-toggler/main/images/customizable_settings.gif' width='100%'>
 
 ## Setting Examples (設定例)
 ### vscode settings(Ctrl + ,)
-- <img src='images/20250516211721.png' width='100%'>
+- <img src='https://raw.githubusercontent.com/shuhei1101/unittest-toggler/main/images/20250516211721.png' width='100%'>
 1. `unittestToggler.isPrefix`: Whether to use the affix as a prefix (default: `true`)
    - `true`: Format like `test_sample.py`
    - `false`: Format like `sample_test.py`
@@ -54,7 +54,7 @@ You can add settings like the following to your `settings.json`:
 
 ## Release Notes
 
-### 0.0.1
+### 1.0.0
 
 - Initial release
 - Module and test file toggle feature
