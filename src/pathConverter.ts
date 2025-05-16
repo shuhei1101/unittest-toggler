@@ -34,11 +34,11 @@ export class PathConverter {
     }
 
     /**
-     * ワークスペース内の相対パスを取得する
-     * @param filePath 絶対ファイルパス
-     * @returns ワークスペースルートからの相対パス
+     * ファイルが属するワークスペースフォルダを取得する
+     * @param filePath ファイルの絶対パス
+     * @returns ファイルが属するワークスペースフォルダ、見つからない場合はundefined
      */
-    public getWorkspaceRelativePath(filePath: string): string | undefined {
+    private getWorkspaceFolder(filePath: string): vscode.WorkspaceFolder | undefined {
         const workspaceFolders = vscode.workspace.workspaceFolders;
         if (!workspaceFolders) {
             return undefined;
@@ -48,11 +48,25 @@ export class PathConverter {
         for (const folder of workspaceFolders) {
             const relativePath = path.relative(folder.uri.fsPath, filePath);
             if (!relativePath.startsWith('..') && !path.isAbsolute(relativePath)) {
-                return relativePath;
+                return folder;
             }
         }
 
         return undefined;
+    }
+
+    /**
+     * ワークスペース内の相対パスを取得する
+     * @param filePath 絶対ファイルパス
+     * @returns ワークスペースルートからの相対パス
+     */
+    public getWorkspaceRelativePath(filePath: string): string | undefined {
+        const workspaceFolder = this.getWorkspaceFolder(filePath);
+        if (!workspaceFolder) {
+            return undefined;
+        }
+
+        return path.relative(workspaceFolder.uri.fsPath, filePath);
     }
 
     /**
@@ -93,13 +107,13 @@ export class PathConverter {
             testFileName = `${sourceFileNameWithoutExt}${affix}${sourceFileExt}`;
         }
 
-        // ワークスペースルートからの絶対パスを生成
-        const workspaceFolders = vscode.workspace.workspaceFolders;
-        if (!workspaceFolders) {
+        // ファイルが属するワークスペースフォルダを取得
+        const workspaceFolder = this.getWorkspaceFolder(sourcePath);
+        if (!workspaceFolder) {
             return undefined;
         }
 
-        return path.join(workspaceFolders[0].uri.fsPath, testFileDir, testFileName);
+        return path.join(workspaceFolder.uri.fsPath, testFileDir, testFileName);
     }
 
     /**
@@ -150,12 +164,12 @@ export class PathConverter {
             }
         }
 
-        // ワークスペースルートからの絶対パスを生成
-        const workspaceFolders = vscode.workspace.workspaceFolders;
-        if (!workspaceFolders) {
+        // ファイルが属するワークスペースフォルダを取得
+        const workspaceFolder = this.getWorkspaceFolder(testPath);
+        if (!workspaceFolder) {
             return undefined;
         }
 
-        return path.join(workspaceFolders[0].uri.fsPath, sourceFileDir, sourceFileName);
+        return path.join(workspaceFolder.uri.fsPath, sourceFileDir, sourceFileName);
     }
 }
