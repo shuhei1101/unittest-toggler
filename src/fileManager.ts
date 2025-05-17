@@ -60,14 +60,24 @@ export class FileManager {
      */
     public async openFile(filePath: string): Promise<vscode.TextEditor | undefined> {
         try {
-            // すでに開かれているエディタを探す
-            const openedEditors = vscode.window.visibleTextEditors;
-            for (const editor of openedEditors) {
+            // 1. まず visibleTextEditors で探す (グループ情報つきで見えているファイル)
+            const visibleEditors = vscode.window.visibleTextEditors;
+            for (const editor of visibleEditors) {
                 if (editor.document.uri.fsPath === filePath) {
-                    // 既に開かれているエディタをアクティブにする
-                    // TextDocumentShowOptionsを使用してグループにフォーカスを移す
+                    // 既に表示されているエディタをアクティブにする (グループ情報を維持)
                     return await vscode.window.showTextDocument(editor.document, {
                         viewColumn: editor.viewColumn,
+                        preserveFocus: false // フォーカスを強制的に移す
+                    });
+                }
+            }
+            
+            // 2. 次に workspace.textDocuments で探す (開かれているが非表示のファイル)
+            const openedDocuments = vscode.workspace.textDocuments;
+            for (const document of openedDocuments) {
+                if (document.uri.fsPath === filePath) {
+                    // 既に開かれているドキュメントをアクティブにする
+                    return await vscode.window.showTextDocument(document, {
                         preserveFocus: false // フォーカスを強制的に移す
                     });
                 }
