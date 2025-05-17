@@ -66,7 +66,7 @@ export class SettingsManager {
      * @returns グループ配置オプション
      */
     public getOpenLocation(): OpenLocationOption {
-        const value = this.get<string>('openLocation', 'currentGroup');
+        const value = this.get<string>('openLocation', 'anotherGroup');
         console.log(`[unittest-toggler] 取得した設定値: ${value}`);
         
         // 文字列を適切な列挙型に変換
@@ -77,11 +77,11 @@ export class SettingsManager {
             case 'anotherGroup':
             case 'otherGroup': // 後方互換性のためにotherGroupも受け付ける
                 return OpenLocationOption.AnotherGroup;
-            case 'verticalGroup': // 後方互換性のために古い値も受け付けるが、CurrentGroupに変換
-            case 'horizontalGroup': // 後方互換性のために古い値も受け付けるが、CurrentGroupに変換
+            case 'verticalGroup': // 後方互換性のために古い値も受け付けるが、AnotherGroupに変換
+            case 'horizontalGroup': // 後方互換性のために古い値も受け付けるが、AnotherGroupに変換
             default: 
-                console.log(`[unittest-toggler] 設定値を変換: ${value} -> currentGroup（デフォルト値）`);
-                return OpenLocationOption.CurrentGroup;
+                console.log(`[unittest-toggler] 設定値を変換: ${value} -> anotherGroup（デフォルト値）`);
+                return OpenLocationOption.AnotherGroup;
         }
     }
 
