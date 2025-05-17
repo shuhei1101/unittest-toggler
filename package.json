@@ -46,6 +46,12 @@
           "group": "navigation@1"
         }
       ],
+      "editor/title/context": [
+        {
+          "command": "unittest-toggler.toggleUnitTest",
+          "group": "1_navigation@1"
+        }
+      ],
       "explorer/context": [
         {
           "command": "unittest-toggler.generateUnitTest",
