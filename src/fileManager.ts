@@ -66,7 +66,6 @@ export class FileManager {
      */
     public async openFile(filePath: string): Promise<vscode.TextEditor | undefined> {
         try {
-
             // ファイルが存在しない場合は空のファイルを作成
             // createFile メソッドでは自動的にディレクトリも作成される
             if (!this.fileExists(filePath)) {
@@ -78,7 +77,7 @@ export class FileManager {
                 this.createFile(filePath);
             }
             
-            // ファイルをVSCodeで開く
+            // ファイル情報を取得
             const document = await vscode.workspace.openTextDocument(filePath);
             
             // 設定に基づいて適切なViewColumnを決定
