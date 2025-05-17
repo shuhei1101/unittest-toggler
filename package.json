@@ -84,6 +84,17 @@
           "type": "boolean",
           "default": true,
           "description": "Whether to use the prefix of the test file's appended string as a prefix. If false, use as a suffix(テストファイルの付加文字列を接頭辞として使用するかどうか。falseの場合は接尾辞として使用)"
+        },
+        "unittestToggler.openLocation": {
+          "type": "string",
+          "enum": [
+            "activeGroup",
+            "otherGroup",
+            "verticalGroup",
+            "horizontalGroup"
+          ],
+          "default": "activeGroup",
+          "description": "Where to open the file when toggling between source and test files(ソースとテストファイル間を切り替えるときに、ファイルを開く場所)"
         }
       }
     }

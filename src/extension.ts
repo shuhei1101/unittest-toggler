@@ -10,7 +10,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// コンポーネントのインスタンス化
 	const settingsManager = new SettingsManager();
 	const pathConverter = new PathConverter(settingsManager);
-	const fileManager = new FileManager();
+	const fileManager = new FileManager(settingsManager);
 	const commandHandler = new CommandHandler(settingsManager, pathConverter, fileManager);
 
 	// コマンドの登録

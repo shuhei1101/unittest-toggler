@@ -2,6 +2,16 @@
 import * as vscode from 'vscode';
 
 /**
+ * 新しいファイルを開く際のグループ配置オプション
+ */
+export enum OpenLocationOption {
+    ActiveGroup = 'activeGroup',
+    OtherGroup = 'otherGroup',
+    VerticalGroup = 'verticalGroup',
+    HorizontalGroup = 'horizontalGroup'
+}
+
+/**
  * 拡張機能の設定を管理するクラス
  */
 export class SettingsManager {
@@ -13,7 +23,9 @@ export class SettingsManager {
      */
     public get<T>(key: string, defaultValue: T): T {
         const config = vscode.workspace.getConfiguration('unittestToggler');
-        return config.get<T>(key, defaultValue);
+        const value = config.get<T>(key, defaultValue);
+        console.log(`[unittest-toggler] 設定取得 - キー: ${key}, 値: ${value}, 型: ${typeof value}`);
+        return value;
     }
 
     /**
@@ -46,6 +58,29 @@ export class SettingsManager {
      */
     public isPrefix(): boolean {
         return this.get<boolean>('isPrefix', true);
+    }
+
+    // 重複定義されたgetメソッドを削除
+    
+    
+    /**
+     * 新しいファイルを開く際のグループ配置を取得する
+     * @returns グループ配置オプション
+     */
+    public getOpenLocation(): OpenLocationOption {
+        const value = this.get<string>('openLocation', 'activeGroup');
+        console.log(`[unittest-toggler] 取得した設定値: ${value}`);
+        
+        // 文字列を適切な列挙型に変換
+        switch (value) {
+            case 'activeGroup': return OpenLocationOption.ActiveGroup;
+            case 'otherGroup': return OpenLocationOption.OtherGroup;
+            case 'verticalGroup': return OpenLocationOption.VerticalGroup;
+            case 'horizontalGroup': return OpenLocationOption.HorizontalGroup;
+            default: 
+                console.log(`[unittest-toggler] 不明な設定値: ${value}, デフォルト値を使用します`);
+                return OpenLocationOption.ActiveGroup;
+        }
     }
 
     /**
