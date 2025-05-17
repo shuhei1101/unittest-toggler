@@ -77,17 +77,6 @@ export class FileManager {
                     });
                 }
             }
-            
-            // // 2. 次に workspace.textDocuments で探す (開かれているが非表示のファイル)
-            // const openedDocuments = vscode.workspace.textDocuments;
-            // for (const document of openedDocuments) {
-            //     if (document.uri.fsPath === filePath) {
-            //         // 既に開かれているドキュメントをアクティブにする
-            //         return await vscode.window.showTextDocument(document, {
-            //             preserveFocus: false // フォーカスを強制的に移す
-            //         });
-            //     }
-            // }
 
             // ファイルが存在しない場合は空のファイルを作成
             // createFile メソッドでは自動的にディレクトリも作成される
