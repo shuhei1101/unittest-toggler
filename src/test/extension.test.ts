@@ -37,7 +37,7 @@ suite('UnitTest Toggler Extension Tests', () => {
 
 	// FileManagerのテスト
 	suite('FileManager Tests', () => {
-		const fileManager = new FileManager();
+		const fileManager = new FileManager(new SettingsManager());
 
 		test('ディレクトリ存在確認', () => {
 			// 存在するディレクトリのテスト

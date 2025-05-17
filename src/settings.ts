@@ -5,10 +5,8 @@ import * as vscode from 'vscode';
  * 新しいファイルを開く際のグループ配置オプション
  */
 export enum OpenLocationOption {
-    ActiveGroup = 'activeGroup',
-    OtherGroup = 'otherGroup',
-    VerticalGroup = 'verticalGroup',
-    HorizontalGroup = 'horizontalGroup'
+    CurrentGroup = 'currentGroup',
+    AnotherGroup = 'anotherGroup'
 }
 
 /**
@@ -68,18 +66,22 @@ export class SettingsManager {
      * @returns グループ配置オプション
      */
     public getOpenLocation(): OpenLocationOption {
-        const value = this.get<string>('openLocation', 'activeGroup');
+        const value = this.get<string>('openLocation', 'currentGroup');
         console.log(`[unittest-toggler] 取得した設定値: ${value}`);
         
         // 文字列を適切な列挙型に変換
         switch (value) {
-            case 'activeGroup': return OpenLocationOption.ActiveGroup;
-            case 'otherGroup': return OpenLocationOption.OtherGroup;
-            case 'verticalGroup': return OpenLocationOption.VerticalGroup;
-            case 'horizontalGroup': return OpenLocationOption.HorizontalGroup;
+            case 'currentGroup': 
+            case 'activeGroup': // 後方互換性のためにactiveGroupも受け付ける
+                return OpenLocationOption.CurrentGroup;
+            case 'anotherGroup':
+            case 'otherGroup': // 後方互換性のためにotherGroupも受け付ける
+                return OpenLocationOption.AnotherGroup;
+            case 'verticalGroup': // 後方互換性のために古い値も受け付けるが、CurrentGroupに変換
+            case 'horizontalGroup': // 後方互換性のために古い値も受け付けるが、CurrentGroupに変換
             default: 
-                console.log(`[unittest-toggler] 不明な設定値: ${value}, デフォルト値を使用します`);
-                return OpenLocationOption.ActiveGroup;
+                console.log(`[unittest-toggler] 設定値を変換: ${value} -> currentGroup（デフォルト値）`);
+                return OpenLocationOption.CurrentGroup;
         }
     }
 

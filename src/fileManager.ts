@@ -118,15 +118,16 @@ export class FileManager {
         console.log(`[unittest-toggler] 使用する設定値(enum): ${openLocation}, 種類: ${typeof openLocation}, 現在のViewColumn: ${activeViewColumn}`);
         
         // 設定の文字列値を直接取得して確認
-        const rawValue = this.settingsManager.get<string>('openLocation', 'activeGroup');
+        const rawValue = this.settingsManager.get<string>('openLocation', 'currentGroup');
         console.log(`[unittest-toggler] 生の設定値(string): ${rawValue}, 種類: ${typeof rawValue}`);
         
         switch (openLocation) {
-            case OpenLocationOption.ActiveGroup:
+            case OpenLocationOption.CurrentGroup:
                 // 現在のグループで開く
+                console.log(`[unittest-toggler] CurrentGroupが指定されたため、現在のグループで開きます: ${activeViewColumn}`);
                 return activeViewColumn;
                 
-            case OpenLocationOption.OtherGroup:
+            case OpenLocationOption.AnotherGroup:
                 // もう一方のグループで開く（2つしかない場合）
                 const visibleEditors = vscode.window.visibleTextEditors;
                 const otherEditors = visibleEditors.filter(editor => 
@@ -135,80 +136,15 @@ export class FileManager {
                 
                 // 他のグループが存在する場合はその最初のものを使用、なければ隣に開く
                 if (otherEditors.length > 0 && otherEditors[0].viewColumn !== undefined) {
+                    console.log(`[unittest-toggler] OtherGroupが指定されたため、他のグループで開きます: ${otherEditors[0].viewColumn}`);
                     return otherEditors[0].viewColumn;
                 }
+                console.log(`[unittest-toggler] OtherGroupが指定されましたが、他のグループが見つからないため新しいグループで開きます`);
                 return vscode.ViewColumn.Beside;
-                    
-            case OpenLocationOption.VerticalGroup:
-                // 縦方向のグループで開く（上下関係）
-                // 表示されているエディタのビューカラムを取得
-                const allColumns = vscode.window.visibleTextEditors
-                    .map(editor => editor.viewColumn)
-                    .filter((column): column is vscode.ViewColumn => column !== undefined)
-                    .filter(column => column !== vscode.ViewColumn.Active);
-                    
-                // 重複を削除してソート
-                const uniqueColumns = [...new Set(allColumns)].sort();
-                
-                if (uniqueColumns.length <= 1) {
-                    // グループが1つしかない場合は新しいグループを作成
-                    return vscode.ViewColumn.Beside;
-                }
-                
-                // 現在のグループのインデックスを見つける
-                let currentIndex = -1;
-                for (let i = 0; i < uniqueColumns.length; i++) {
-                    if (uniqueColumns[i] === activeViewColumn) {
-                        currentIndex = i;
-                        break;
-                    }
-                }
-                
-                if (currentIndex === -1) {
-                    // 現在のグループが見つからない場合は新しいグループを作成
-                    return vscode.ViewColumn.Beside;
-                }
-                
-                // 次のグループ（上方向巻き戻し）
-                const nextIndex = (currentIndex - 1 + uniqueColumns.length) % uniqueColumns.length;
-                return uniqueColumns[nextIndex];
-                
-            case OpenLocationOption.HorizontalGroup:
-                // 横方向のグループで開く（左右関係）
-                // 表示されているエディタのビューカラムを取得
-                const allHorizColumns = vscode.window.visibleTextEditors
-                    .map(editor => editor.viewColumn)
-                    .filter((column): column is vscode.ViewColumn => column !== undefined)
-                    .filter(column => column !== vscode.ViewColumn.Active);
-                    
-                // 重複を削除してソート
-                const uniqueHorizColumns = [...new Set(allHorizColumns)].sort();
-                
-                if (uniqueHorizColumns.length <= 1) {
-                    // グループが1つしかない場合は新しいグループを作成
-                    return vscode.ViewColumn.Beside;
-                }
-                
-                // 現在のグループのインデックスを見つける
-                let currentHorizIndex = -1;
-                for (let i = 0; i < uniqueHorizColumns.length; i++) {
-                    if (uniqueHorizColumns[i] === activeViewColumn) {
-                        currentHorizIndex = i;
-                        break;
-                    }
-                }
-                
-                if (currentHorizIndex === -1) {
-                    // 現在のグループが見つからない場合は新しいグループを作成
-                    return vscode.ViewColumn.Beside;
-                }
-                
-                // 次のグループ（右方向巻き戻し）
-                const nextHorizIndex = (currentHorizIndex + 1) % uniqueHorizColumns.length;
-                return uniqueHorizColumns[nextHorizIndex];
                 
             default:
                 // デフォルトは現在のグループ
+                console.log(`[unittest-toggler] デフォルト: 現在のグループで開きます: ${activeViewColumn}`);
                 return activeViewColumn;
         }
     }

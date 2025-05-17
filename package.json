@@ -88,12 +88,10 @@
         "unittestToggler.openLocation": {
           "type": "string",
           "enum": [
-            "activeGroup",
-            "otherGroup",
-            "verticalGroup",
-            "horizontalGroup"
+            "currentGroup",
+            "anotherGroup"
           ],
-          "default": "activeGroup",
+          "default": "currentGroup",
           "description": "Where to open the file when toggling between source and test files(ソースとテストファイル間を切り替えるときに、ファイルを開く場所)"
         }
       }
