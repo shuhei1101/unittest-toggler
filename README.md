@@ -61,28 +61,7 @@ You can add settings like the following to your `settings.json`:
 
 - Visual Studio Code version 1.100.0 or later
 
-## Release Notes
-
-### 1.1.0
-- Added new setting `openLocation` to control where files are opened when toggling between source and test files
-  - `currentGroup`: Open files in the current editor group (previously called "activeGroup")
-  - `anotherGroup`: Open files in another editor group if available, or create a new group (default)
-- Enhanced context menu support: 
-  - Added Toggle UnitTest command to editor tab context menus
-  - Simplified UI by removing the Generate UnitTest command (functionality available via Toggle UnitTest)
-- Improved editor group handling when toggling between files already open in different groups
-
-### 1.0.1
-
-- Bug-fix: Improved behavior in multi-workspace environments (correctly identifying the workspace to which the current file belongs)
-
-### 1.0.0
-
-- Initial release
-- Module and test file toggle feature
-- Test file auto-generation feature
-- Batch file generation feature
-- Settings customization feature
+ustomization feature
 
 ## License
 

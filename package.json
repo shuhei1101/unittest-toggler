@@ -2,7 +2,7 @@
   "name": "unittest-toggler",
   "displayName": "UnitTest Toggler",
   "description": "An extension for easy switching between module and unittest files on VSCode",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "publisher": "ShuheiNishikawa",
   "license": "MIT",
   "icon": "icon.png",

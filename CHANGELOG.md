@@ -4,6 +4,9 @@ All notable changes to the "unittest-toggler" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.1]- 2025-05-18
+- Updated README.md
+
 ## [1.1.0] - 2025-05-17
 
 ### Added
