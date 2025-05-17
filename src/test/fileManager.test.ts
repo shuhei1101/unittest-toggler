@@ -3,13 +3,14 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';
 import { FileManager } from '../fileManager';
+import { SettingsManager } from '../settings';
 
 suite('FileManager Tests', () => {
     let fileManager: FileManager;
     let tempDir: string;
     
     setup(() => {
-        fileManager = new FileManager();
+        fileManager = new FileManager(new SettingsManager());
         // 一時ディレクトリを作成
         tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'unittest-toggler-test-'));
     });

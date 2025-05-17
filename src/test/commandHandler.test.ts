@@ -52,6 +52,10 @@ suite('CommandHandler Tests', () => {
     class MockFileManager extends FileManager {
         private _fileExists: boolean = false;
         private _openedFile: string | null = null;
+
+        constructor() {
+            super(new MockSettingsManager());
+        }
         
         setFileExists(exists: boolean): void {
             this._fileExists = exists;

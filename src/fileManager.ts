@@ -2,11 +2,17 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
+import { SettingsManager, OpenLocationOption } from './settings';
 
 /**
  * ファイル操作を担当するクラス
  */
 export class FileManager {
+    private settingsManager: SettingsManager;
+
+    constructor(settingsManager: SettingsManager) {
+        this.settingsManager = settingsManager;
+    }
     /**
      * ファイルが存在するか確認する
      * @param filePath ファイルパス
@@ -71,13 +77,63 @@ export class FileManager {
                 this.createFile(filePath);
             }
             
-            // ファイルをVSCodeで開く
+            // ファイル情報を取得
             const document = await vscode.workspace.openTextDocument(filePath);
-            return await vscode.window.showTextDocument(document);
+            
+            // 設定に基づいて適切なViewColumnを決定
+            const viewColumn = this.determineViewColumn();
+            console.log(`[unittest-toggler] ファイル新規表示時のviewColumn: ${viewColumn}`);
+            
+            // 明示的なViewColumnオプションを使用
+            return await vscode.window.showTextDocument(document, {
+                viewColumn,
+                preserveFocus: false
+            });
         } catch (error) {
             console.error(`ファイルを開けませんでした: ${filePath}`, error);
             vscode.window.showErrorMessage(`ファイルを開けませんでした: ${filePath}`);
             return undefined;
+        }
+    }    /**
+     * 新規ファイルを開く際のViewColumnを決定する
+     * @returns 適切なViewColumn
+     */
+    private determineViewColumn(): vscode.ViewColumn {
+        const openLocation = this.settingsManager.getOpenLocation();
+        const activeEditor = vscode.window.activeTextEditor;
+        const activeViewColumn = activeEditor?.viewColumn || vscode.ViewColumn.One;
+        
+        console.log(`[unittest-toggler] 使用する設定値(enum): ${openLocation}, 種類: ${typeof openLocation}, 現在のViewColumn: ${activeViewColumn}`);
+        
+        // 設定の文字列値を直接取得して確認
+        const rawValue = this.settingsManager.get<string>('openLocation', 'currentGroup');
+        console.log(`[unittest-toggler] 生の設定値(string): ${rawValue}, 種類: ${typeof rawValue}`);
+        
+        switch (openLocation) {
+            case OpenLocationOption.CurrentGroup:
+                // 現在のグループで開く
+                console.log(`[unittest-toggler] CurrentGroupが指定されたため、現在のグループで開きます: ${activeViewColumn}`);
+                return activeViewColumn;
+                
+            case OpenLocationOption.AnotherGroup:
+                // もう一方のグループで開く（2つしかない場合）
+                const visibleEditors = vscode.window.visibleTextEditors;
+                const otherEditors = visibleEditors.filter(editor => 
+                    editor.viewColumn !== activeViewColumn && 
+                    editor.viewColumn !== vscode.ViewColumn.Active);
+                
+                // 他のグループが存在する場合はその最初のものを使用、なければ隣に開く
+                if (otherEditors.length > 0 && otherEditors[0].viewColumn !== undefined) {
+                    console.log(`[unittest-toggler] OtherGroupが指定されたため、他のグループで開きます: ${otherEditors[0].viewColumn}`);
+                    return otherEditors[0].viewColumn;
+                }
+                console.log(`[unittest-toggler] OtherGroupが指定されましたが、他のグループが見つからないため新しいグループで開きます`);
+                return vscode.ViewColumn.Beside;
+                
+            default:
+                // デフォルトは現在のグループ
+                console.log(`[unittest-toggler] デフォルト: 現在のグループで開きます: ${activeViewColumn}`);
+                return activeViewColumn;
         }
     }
 }

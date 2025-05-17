@@ -5,6 +5,10 @@ This extension allows you to easily toggle between module files and unittest fil
 
 ## Features / How to Use (機能 / 使い方)
 
+### (new) Open files in the another editor group
+- <img src='https://raw.githubusercontent.com/shuhei1101/unittest-toggler/main/images/cfg-another-group' width='100%'>
+-  Select `anotherGroup` on new setting `openLocation` 
+
 ### Easy switching between module files and test files
 - <img src='https://raw.githubusercontent.com/shuhei1101/unittest-toggler/main/images/module_to_ut.gif' width='100%'>
 - Press `Ctrl+Shift+T` (macOS: `Cmd+Shift+T`)
@@ -34,6 +38,11 @@ This extension allows you to easily toggle between module files and unittest fil
 3. `unittestToggler.testDirectory`: Name of your project's test code directory (default: `tests`)
 4. `unittestToggler.testFileAffix`: Prefix or suffix added to test file names (default: `test_`)
 
+#### new (^1.0.1~)
+- <img src='https://raw.githubusercontent.com/shuhei1101/unittest-toggler/main/images/20250517232814.png' width='100%'>
+- `anotherGroup`: Open files in another editor group if available, or create a new group (default)
+- `currentGroup`: Open files in the current editor group (previously called "activeGroup")
+
 ### settings.json
 You can add settings like the following to your `settings.json`:
 
@@ -53,6 +62,15 @@ You can add settings like the following to your `settings.json`:
 - Visual Studio Code version 1.100.0 or later
 
 ## Release Notes
+
+### 1.1.0
+- Added new setting `openLocation` to control where files are opened when toggling between source and test files
+  - `currentGroup`: Open files in the current editor group (previously called "activeGroup")
+  - `anotherGroup`: Open files in another editor group if available, or create a new group (default)
+- Enhanced context menu support: 
+  - Added Toggle UnitTest command to editor tab context menus
+  - Simplified UI by removing the Generate UnitTest command (functionality available via Toggle UnitTest)
+- Improved editor group handling when toggling between files already open in different groups
 
 ### 1.0.1
 
