@@ -60,6 +60,19 @@ export class FileManager {
      */
     public async openFile(filePath: string): Promise<vscode.TextEditor | undefined> {
         try {
+            // すでに開かれているエディタを探す
+            const openedEditors = vscode.window.visibleTextEditors;
+            for (const editor of openedEditors) {
+                if (editor.document.uri.fsPath === filePath) {
+                    // 既に開かれているエディタをアクティブにする
+                    // TextDocumentShowOptionsを使用してグループにフォーカスを移す
+                    return await vscode.window.showTextDocument(editor.document, {
+                        viewColumn: editor.viewColumn,
+                        preserveFocus: false // フォーカスを強制的に移す
+                    });
+                }
+            }
+
             // ファイルが存在しない場合は空のファイルを作成
             // createFile メソッドでは自動的にディレクトリも作成される
             if (!this.fileExists(filePath)) {
