@@ -6,7 +6,7 @@ This extension allows you to easily toggle between module files and unittest fil
 ## Features / How to Use (機能 / 使い方)
 
 ### (new) Open files in the another editor group
-- <img src='https://raw.githubusercontent.com/shuhei1101/unittest-toggler/main/images/cfg-another-group' width='100%'>
+- <img src='https://raw.githubusercontent.com/shuhei1101/unittest-toggler/main/images/cfg-another-group.gif' width='100%'>
 -  Select `anotherGroup` on new setting `openLocation` 
 
 ### Easy switching between module files and test files
