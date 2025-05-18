@@ -4,6 +4,12 @@ All notable changes to the "unittest-toggler" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.2] - 2025-05-18
+
+### Fixed
+- Bug fix: Fixed an issue where new groups would be created even if there were already other editor groups.
+- Improved editor group detection logic and corrected `ViewColumn.Active` handling
+
 ## [1.1.1]- 2025-05-18
 - Updated README.md
 
