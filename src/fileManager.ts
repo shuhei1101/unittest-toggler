@@ -118,9 +118,10 @@ export class FileManager {
             case OpenLocationOption.AnotherGroup:
                 // もう一方のグループで開く（2つしかない場合）
                 const visibleEditors = vscode.window.visibleTextEditors;
+                // 現在のビューカラムと異なる、かつundefinedではないエディタをフィルタリング
                 const otherEditors = visibleEditors.filter(editor => 
                     editor.viewColumn !== activeViewColumn && 
-                    editor.viewColumn !== vscode.ViewColumn.Active);
+                    editor.viewColumn !== undefined);
                 
                 // 他のグループが存在する場合はその最初のものを使用、なければ隣に開く
                 if (otherEditors.length > 0 && otherEditors[0].viewColumn !== undefined) {
