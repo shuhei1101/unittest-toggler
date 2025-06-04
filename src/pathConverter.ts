@@ -34,66 +34,35 @@ export class PathConverter {
     }
 
     /**
-     * ファイルが属するワークスペースフォルダを取得する
-     * @param filePath ファイルの絶対パス
-     * @returns ファイルが属するワークスペースフォルダ、見つからない場合はundefined
-     */
-    private getWorkspaceFolder(filePath: string): vscode.WorkspaceFolder | undefined {
-        const workspaceFolders = vscode.workspace.workspaceFolders;
-        if (!workspaceFolders) {
-            return undefined;
-        }
-
-        // ファイルが属するワークスペースフォルダを見つける
-        for (const folder of workspaceFolders) {
-            const relativePath = path.relative(folder.uri.fsPath, filePath);
-            if (!relativePath.startsWith('..') && !path.isAbsolute(relativePath)) {
-                return folder;
-            }
-        }
-
-        return undefined;
-    }
-
-    /**
-     * ワークスペース内の相対パスを取得する
-     * @param filePath 絶対ファイルパス
-     * @returns ワークスペースルートからの相対パス
-     */
-    public getWorkspaceRelativePath(filePath: string): string | undefined {
-        const workspaceFolder = this.getWorkspaceFolder(filePath);
-        if (!workspaceFolder) {
-            return undefined;
-        }
-
-        return path.relative(workspaceFolder.uri.fsPath, filePath);
-    }
-
-    /**
      * ソースファイルからテストファイルへのパスを生成する
      * @param sourcePath ソースファイルの絶対パス
      * @returns テストファイルの絶対パス
      */
     public getTestFilePath(sourcePath: string): string | undefined {
-        const sourceRelativePath = this.getWorkspaceRelativePath(sourcePath);
-        if (!sourceRelativePath) {
-            return undefined;
-        }
-
         const sourceDir = this.settingsManager.getSourceDirectory();
         const testDir = this.settingsManager.getTestDirectory();
 
-        // ソースディレクトリ外のファイルは処理しない
-        if (!sourceRelativePath.startsWith(sourceDir + path.sep)) {
+        // 設定が空の場合は処理しない
+        if (!sourceDir || !testDir) {
+            console.log('[unittest-toggler] sourceDirectory または testDirectory が設定されていません');
             return undefined;
         }
 
-        const relativeToSrc = path.relative(sourceDir, sourceRelativePath);
-        const testRelativePath = path.join(testDir, relativeToSrc);
+        // ソースディレクトリ内のファイルかどうかを確認
+        if (!sourcePath.startsWith(sourceDir + path.sep) && sourcePath !== sourceDir) {
+            console.log(`[unittest-toggler] ファイルがソースディレクトリ外にあります: ${sourcePath}`);
+            return undefined;
+        }
+
+        // ソースディレクトリからの相対パスを取得
+        const relativeToSource = path.relative(sourceDir, sourcePath);
+        
+        // テストファイルのパスを生成
+        const testFilePath = path.join(testDir, relativeToSource);
 
         // ファイル名部分を変更
-        const testFileDir = path.dirname(testRelativePath);
-        const sourceFileName = path.basename(sourceRelativePath);
+        const testFileDir = path.dirname(testFilePath);
+        const sourceFileName = path.basename(sourcePath);
         const sourceFileExt = path.extname(sourceFileName);
         const sourceFileNameWithoutExt = sourceFileName.slice(0, -sourceFileExt.length);
         
@@ -107,13 +76,7 @@ export class PathConverter {
             testFileName = `${sourceFileNameWithoutExt}${affix}${sourceFileExt}`;
         }
 
-        // ファイルが属するワークスペースフォルダを取得
-        const workspaceFolder = this.getWorkspaceFolder(sourcePath);
-        if (!workspaceFolder) {
-            return undefined;
-        }
-
-        return path.join(workspaceFolder.uri.fsPath, testFileDir, testFileName);
+        return path.join(testFileDir, testFileName);
     }
 
     /**
@@ -122,25 +85,30 @@ export class PathConverter {
      * @returns ソースファイルの絶対パス
      */
     public getSourceFilePath(testPath: string): string | undefined {
-        const testRelativePath = this.getWorkspaceRelativePath(testPath);
-        if (!testRelativePath) {
-            return undefined;
-        }
-
         const sourceDir = this.settingsManager.getSourceDirectory();
         const testDir = this.settingsManager.getTestDirectory();
 
-        // テストディレクトリ外のファイルは処理しない
-        if (!testRelativePath.startsWith(testDir + path.sep)) {
+        // 設定が空の場合は処理しない
+        if (!sourceDir || !testDir) {
+            console.log('[unittest-toggler] sourceDirectory または testDirectory が設定されていません');
             return undefined;
         }
 
-        const relativeToTest = path.relative(testDir, testRelativePath);
-        const sourceRelativePath = path.join(sourceDir, relativeToTest);
+        // テストディレクトリ内のファイルかどうかを確認
+        if (!testPath.startsWith(testDir + path.sep) && testPath !== testDir) {
+            console.log(`[unittest-toggler] ファイルがテストディレクトリ外にあります: ${testPath}`);
+            return undefined;
+        }
+
+        // テストディレクトリからの相対パスを取得
+        const relativeToTest = path.relative(testDir, testPath);
+        
+        // ソースファイルのパスを生成
+        const sourceFilePath = path.join(sourceDir, relativeToTest);
 
         // ファイル名部分を変更
-        const sourceFileDir = path.dirname(sourceRelativePath);
-        const testFileName = path.basename(testRelativePath);
+        const sourceFileDir = path.dirname(sourceFilePath);
+        const testFileName = path.basename(testPath);
         const testFileExt = path.extname(testFileName);
         const testFileNameWithoutExt = testFileName.slice(0, -testFileExt.length);
         
@@ -164,12 +132,6 @@ export class PathConverter {
             }
         }
 
-        // ファイルが属するワークスペースフォルダを取得
-        const workspaceFolder = this.getWorkspaceFolder(testPath);
-        if (!workspaceFolder) {
-            return undefined;
-        }
-
-        return path.join(workspaceFolder.uri.fsPath, sourceFileDir, sourceFileName);
+        return path.join(sourceFileDir, sourceFileName);
     }
 }

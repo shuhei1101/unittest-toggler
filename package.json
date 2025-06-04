@@ -2,7 +2,7 @@
   "name": "unittest-toggler",
   "displayName": "UnitTest Toggler",
   "description": "An extension for easy switching between module and unittest files on VSCode",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "publisher": "ShuheiNishikawa",
   "license": "MIT",
   "icon": "icon.png",
@@ -73,13 +73,13 @@
       "properties": {
         "unittestToggler.sourceDirectory": {
           "type": "string",
-          "default": "src",
-          "description": "Project source code directory name(プロジェクトのソースコードディレクトリ名)"
+          "default": "",
+          "description": "Absolute path to the project source code directory (e.g. /path/to/project/src/main) (プロジェクトのソースコードディレクトリの絶対パス。例: /path/to/project/src/main)"
         },
         "unittestToggler.testDirectory": {
           "type": "string",
-          "default": "tests",
-          "description": "Project test code directory name(プロジェクトのテストコードディレクトリ名)"
+          "default": "",
+          "description": "Absolute path to the project test code directory (e.g. /path/to/project/src/test) (プロジェクトのテストコードディレクトリの絶対パス。例: /path/to/project/src/test)"
         },
         "unittestToggler.testFileAffix": {
           "type": "string",

@@ -34,8 +34,8 @@ This extension allows you to easily toggle between module files and unittest fil
 1. `unittestToggler.isPrefix`: Whether to use the affix as a prefix (default: `true`)
    - `true`: Format like `test_sample.py`
    - `false`: Format like `sample_test.py`
-2. `unittestToggler.sourceDirectory`: Name of your project's source code directory (default: `src`)
-3. `unittestToggler.testDirectory`: Name of your project's test code directory (default: `tests`)
+2. `unittestToggler.sourceDirectory`: Absolute path to your project's source code directory (e.g. `/path/to/project/src/main`)
+3. `unittestToggler.testDirectory`: Absolute path to your project's test code directory (e.g. `/path/to/project/src/test`)
 4. `unittestToggler.testFileAffix`: Prefix or suffix added to test file names (default: `test_`)
 
 #### new (^1.0.1~)
@@ -46,16 +46,29 @@ This extension allows you to easily toggle between module files and unittest fil
 ### settings.json
 You can add settings like the following to your `settings.json`:
 
+#### Python Project Example
 ```json
 {
-  "unittestToggler.sourceDirectory": "src",
-  "unittestToggler.testDirectory": "test",
-  "unittestToggler.testFileAffix": "_test",
+  "unittestToggler.sourceDirectory": "/path/to/your/project/src",
+  "unittestToggler.testDirectory": "/path/to/your/project/tests",
+  "unittestToggler.testFileAffix": "test_",
+  "unittestToggler.isPrefix": true
+}
+```
+- Source file: `/path/to/your/project/src/hoge/huga.py`
+- Test file: `/path/to/your/project/tests/hoge/test_huga.py`
+
+#### Java Project Example
+```json
+{
+  "unittestToggler.sourceDirectory": "/path/to/your/project/src/main/java",
+  "unittestToggler.testDirectory": "/path/to/your/project/src/test/java",
+  "unittestToggler.testFileAffix": "Test",
   "unittestToggler.isPrefix": false
 }
 ```
-- Source file: `src/hoge/huga.ts`
-- Test file: `test/hoge/huga_test.ts`
+- Source file: `/path/to/your/project/src/main/java/com/example/Sample.java`
+- Test file: `/path/to/your/project/src/test/java/com/example/SampleTest.java`
 
 ## Requirements
 

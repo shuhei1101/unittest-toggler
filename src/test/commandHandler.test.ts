@@ -43,10 +43,6 @@ suite('CommandHandler Tests', () => {
             }
             return undefined;
         }
-        
-        override getWorkspaceRelativePath(filePath: string): string | undefined {
-            return filePath;
-        }
     }
     
     class MockFileManager extends FileManager {

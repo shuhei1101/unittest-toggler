@@ -71,30 +71,25 @@ suite('PathConverter Tests', () => {
     });
     
     test('getTestFilePath - ソースからテストパスへの変換', () => {
-        // モックのワークスペースパスが必要
-        // 実際のテスト環境ではこの部分は調整が必要
-        const mockWorkspacePath = '/workspace';
-        const sourcePath = path.join(mockWorkspacePath, 'src', 'module', 'file.py');
+        // 絶対パス対応のテスト
+        const sourceDir = '/workspace/src';
+        const testDir = '/workspace/tests';
+        const sourcePath = '/workspace/src/module/file.py';
         
-        // getWorkspaceRelativePathをモック化する必要がある
-        // これは簡易的な擬似テストです
-        const mockPathConverter = {
-            ...pathConverter,
-            getWorkspaceRelativePath: (filePath: string) => 'src/module/file.py'
-        };
+        // 設定をモック化
+        const mockSettingsManager = {
+            getSourceDirectory: () => sourceDir,
+            getTestDirectory: () => testDir,
+            getTestFileAffix: () => 'test_',
+            isPrefix: () => true
+        } as SettingsManager;
         
-        // TypeScriptでプロトタイプチェーンを操作するのは避けるべきですが、
-        // テストのためにここでは簡易的な手法を示します
-        const testFilePath = Object.getPrototypeOf(mockPathConverter).getTestFilePath.call(
-            mockPathConverter, sourcePath
-        );
+        const mockPathConverter = new PathConverter(mockSettingsManager);
+        const testFilePath = mockPathConverter.getTestFilePath(sourcePath);
         
-        // この条件ではテストは実行されませんが、実装イメージを示します
+        // 期待される結果をチェック
         if (testFilePath) {
-            assert.strictEqual(
-                path.basename(testFilePath), 
-                'test_file.py'
-            );
+            assert.strictEqual(testFilePath, '/workspace/tests/module/test_file.py');
         }
     });
 });

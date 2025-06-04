@@ -4,6 +4,24 @@ All notable changes to the "unittest-toggler" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.2.0] - 2025-06-05
+
+### Breaking Changes
+- **BREAKING**: Changed `sourceDirectory` and `testDirectory` settings to use absolute paths instead of relative paths
+  - Previously: `"unittestToggler.sourceDirectory": "src"`
+  - Now: `"unittestToggler.sourceDirectory": "/absolute/path/to/your/project/src"`
+  - This change enables better support for complex project structures, especially Java projects with `src/main` and `src/test` directories
+
+### Added
+- Enhanced support for Java project structures (e.g., `src/main/java` and `src/test/java`)
+- Better error handling when source or test directories are not configured
+- Updated README.md with new configuration examples for Python and Java projects
+
+### Changed
+- Improved path resolution logic to use absolute paths throughout the codebase
+- Removed dependency on workspace-relative path calculations
+- Updated default values for directory settings to empty strings (requiring explicit configuration)
+
 ## [1.1.2] - 2025-05-18
 
 ### Fixed

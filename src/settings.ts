@@ -27,19 +27,19 @@ export class SettingsManager {
     }
 
     /**
-     * プロジェクトのソースディレクトリを取得する
-     * @returns ソースディレクトリ名
+     * プロジェクトのソースディレクトリの絶対パスを取得する
+     * @returns ソースディレクトリの絶対パス
      */
     public getSourceDirectory(): string {
-        return this.get<string>('sourceDirectory', 'src');
+        return this.get<string>('sourceDirectory', '');
     }
 
     /**
-     * プロジェクトのテストディレクトリを取得する
-     * @returns テストディレクトリ名
+     * プロジェクトのテストディレクトリの絶対パスを取得する
+     * @returns テストディレクトリの絶対パス
      */
     public getTestDirectory(): string {
-        return this.get<string>('testDirectory', 'tests');
+        return this.get<string>('testDirectory', '');
     }
 
     /**

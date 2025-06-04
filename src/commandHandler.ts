@@ -72,22 +72,22 @@ export class CommandHandler {
         const sourceDir = this.settingsManager.getSourceDirectory();
         const testDir = this.settingsManager.getTestDirectory();
 
+        // 設定が空の場合は処理しない
+        if (!sourceDir || !testDir) {
+            vscode.window.showErrorMessage('sourceDirectory と testDirectory を設定してください');
+            return;
+        }
+
         // 処理成功カウンタ
         let successCount = 0;
         let errorCount = 0;
 
         for (const uri of uris) {
             const filePath = uri.fsPath;
-            const relativePath = this.pathConverter.getWorkspaceRelativePath(filePath);
-            
-            if (!relativePath) {
-                errorCount++;
-                continue;
-            }
 
             // ファイルがソースディレクトリまたはテストディレクトリに属しているか確認
-            const inSourceDir = relativePath.startsWith(sourceDir);
-            const inTestDir = relativePath.startsWith(testDir);
+            const inSourceDir = filePath.startsWith(sourceDir + path.sep) || filePath === sourceDir;
+            const inTestDir = filePath.startsWith(testDir + path.sep) || filePath === testDir;
 
             if (!inSourceDir && !inTestDir) {
                 vscode.window.showWarningMessage(`ファイル "${path.basename(filePath)}" はソースディレクトリまたはテストディレクトリに属していません`);
