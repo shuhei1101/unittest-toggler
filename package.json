@@ -86,10 +86,14 @@
           "default": "test_",
           "description": "Prefixes or suffixes added to the test file name (e.g. test_, _test)(テストファイル名に追加される接頭辞または接尾辞（例: test_、_test）)"
         },
-        "unittestToggler.isPrefix": {
-          "type": "boolean",
-          "default": true,
-          "description": "Whether to use the prefix of the test file's appended string as a prefix. If false, use as a suffix(テストファイルの付加文字列を接頭辞として使用するかどうか。falseの場合は接尾辞として使用)"
+        "unittestToggler.affixPosition": {
+          "type": "string",
+          "enum": [
+            "prefix",
+            "suffix"
+          ],
+          "default": "prefix",
+          "description": "Position of the test file affix (テストファイルの付加文字列の位置)"
         },
         "unittestToggler.openLocation": {
           "type": "string",

@@ -21,9 +21,9 @@ export class PathConverter {
     public isTestFile(filePath: string): boolean {
         const fileName = path.basename(filePath);
         const affix = this.settingsManager.getTestFileAffix();
-        const isPrefix = this.settingsManager.isPrefix();
+        const affixPosition = this.settingsManager.getAffixPosition();
 
-        if (isPrefix) {
+        if (affixPosition === 'prefix') {
             return fileName.startsWith(affix);
         } else {
             // ファイル拡張子を除外して確認
@@ -67,10 +67,10 @@ export class PathConverter {
         const sourceFileNameWithoutExt = sourceFileName.slice(0, -sourceFileExt.length);
         
         const affix = this.settingsManager.getTestFileAffix();
-        const isPrefix = this.settingsManager.isPrefix();
+        const affixPosition = this.settingsManager.getAffixPosition();
 
         let testFileName;
-        if (isPrefix) {
+        if (affixPosition === 'prefix') {
             testFileName = `${affix}${sourceFileNameWithoutExt}${sourceFileExt}`;
         } else {
             testFileName = `${sourceFileNameWithoutExt}${affix}${sourceFileExt}`;
@@ -113,10 +113,10 @@ export class PathConverter {
         const testFileNameWithoutExt = testFileName.slice(0, -testFileExt.length);
         
         const affix = this.settingsManager.getTestFileAffix();
-        const isPrefix = this.settingsManager.isPrefix();
+        const affixPosition = this.settingsManager.getAffixPosition();
 
         let sourceFileName;
-        if (isPrefix) {
+        if (affixPosition === 'prefix') {
             // 接頭辞を削除
             if (testFileNameWithoutExt.startsWith(affix)) {
                 sourceFileName = `${testFileNameWithoutExt.substring(affix.length)}${testFileExt}`;

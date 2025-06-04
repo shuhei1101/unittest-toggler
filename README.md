@@ -31,9 +31,9 @@ This extension allows you to easily toggle between module files and unittest fil
 ## Setting Examples (設定例)
 ### vscode settings(Ctrl + ,)
 - <img src='https://raw.githubusercontent.com/shuhei1101/unittest-toggler/main/images/20250516211721.png' width='100%'>
-1. `unittestToggler.isPrefix`: Whether to use the affix as a prefix (default: `true`)
-   - `true`: Format like `test_sample.py`
-   - `false`: Format like `sample_test.py`
+1. `unittestToggler.affixPosition`: Position of the test file affix (default: `prefix`)
+   - `prefix`: Format like `test_sample.py`
+   - `suffix`: Format like `sample_test.py`
 2. `unittestToggler.sourceDirectory`: Absolute path to your project's source code directory (e.g. `/path/to/project/src/main`)
 3. `unittestToggler.testDirectory`: Absolute path to your project's test code directory (e.g. `/path/to/project/src/test`)
 4. `unittestToggler.testFileAffix`: Prefix or suffix added to test file names (default: `test_`)
@@ -52,7 +52,7 @@ You can add settings like the following to your `settings.json`:
   "unittestToggler.sourceDirectory": "/path/to/your/project/src",
   "unittestToggler.testDirectory": "/path/to/your/project/tests",
   "unittestToggler.testFileAffix": "test_",
-  "unittestToggler.isPrefix": true
+  "unittestToggler.affixPosition": "prefix"
 }
 ```
 - Source file: `/path/to/your/project/src/hoge/huga.py`
@@ -64,7 +64,7 @@ You can add settings like the following to your `settings.json`:
   "unittestToggler.sourceDirectory": "/path/to/your/project/src/main/java",
   "unittestToggler.testDirectory": "/path/to/your/project/src/test/java",
   "unittestToggler.testFileAffix": "Test",
-  "unittestToggler.isPrefix": false
+  "unittestToggler.affixPosition": "suffix"
 }
 ```
 - Source file: `/path/to/your/project/src/main/java/com/example/Sample.java`

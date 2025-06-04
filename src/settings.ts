@@ -51,11 +51,28 @@ export class SettingsManager {
     }
 
     /**
+     * テストファイルの付加文字列の位置を取得する
+     * @returns 付加文字列の位置（'prefix' または 'suffix'）
+     */
+    public getAffixPosition(): 'prefix' | 'suffix' {
+        // 新しい設定を優先し、なければ旧設定から変換
+        const newSetting = this.get<string>('affixPosition', '');
+        if (newSetting === 'prefix' || newSetting === 'suffix') {
+            return newSetting;
+        }
+        
+        // 旧設定から変換（後方互換性）
+        const isPrefix = this.get<boolean>('isPrefix', true);
+        return isPrefix ? 'prefix' : 'suffix';
+    }
+
+    /**
      * 付加文字列が接頭辞かどうかを取得する
+     * @deprecated getAffixPosition()を使用してください
      * @returns 接頭辞の場合はtrue
      */
     public isPrefix(): boolean {
-        return this.get<boolean>('isPrefix', true);
+        return this.getAffixPosition() === 'prefix';
     }
 
     // 重複定義されたgetメソッドを削除
