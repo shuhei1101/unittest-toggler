@@ -43,20 +43,23 @@ export class CommandHandler {
             // テストファイルからソースファイルへ
             targetPath = this.pathConverter.getSourceFilePath(filePath);
             if (!targetPath) {
-                vscode.window.showErrorMessage('対応するソースファイルのパスを特定できませんでした');
+                vscode.window.showErrorMessage(`ファイルがテストディレクトリ外にあります`);
                 return;
             }
         } else {
             // ソースファイルからテストファイルへ
             targetPath = this.pathConverter.getTestFilePath(filePath);
             if (!targetPath) {
-                vscode.window.showErrorMessage('対応するテストファイルのパスを特定できませんでした');
+                vscode.window.showErrorMessage(`ファイルがソースディレクトリ外にあります`);
                 return;
             }
         }
 
         // ファイルを開く
-        await this.fileManager.openFile(targetPath);
+        const result = await this.fileManager.openFile(targetPath);
+        if (!result) {
+            vscode.window.showErrorMessage(`ファイルを開けませんでした: ${targetPath}`);
+        }
     }
 
     /**
@@ -90,7 +93,7 @@ export class CommandHandler {
             const inTestDir = filePath.startsWith(testDir + path.sep) || filePath === testDir;
 
             if (!inSourceDir && !inTestDir) {
-                vscode.window.showWarningMessage(`ファイル "${path.basename(filePath)}" はソースディレクトリまたはテストディレクトリに属していません`);
+                vscode.window.showWarningMessage(`ファイル "${filePath}" はソースディレクトリまたはテストディレクトリに属していません`);
                 errorCount++;
                 continue;
             }
@@ -106,14 +109,19 @@ export class CommandHandler {
             }
 
             if (!targetPath) {
-                vscode.window.showErrorMessage(`ファイル "${path.basename(filePath)}" の対応するファイルパスを特定できませんでした`);
+                vscode.window.showErrorMessage(`ファイル "${filePath}" の対応するファイルパスを特定できませんでした`);
                 errorCount++;
                 continue;
             }
 
             // ファイルを開く（ファイルが存在しない場合は作成される）
-            await this.fileManager.openFile(targetPath);
-            successCount++;
+            const result = await this.fileManager.openFile(targetPath);
+            if (result) {
+                successCount++;
+            } else {
+                vscode.window.showErrorMessage(`ファイルを開けませんでした: ${targetPath}`);
+                errorCount++;
+            }
         }
 
         // 処理結果を表示

@@ -44,8 +44,14 @@ export class FileManager {
      * @param dirPath ディレクトリパス
      */
     public createDirectory(dirPath: string): void {
-        if (!this.directoryExists(dirPath)) {
-            fs.mkdirSync(dirPath, { recursive: true });
+        try {
+            if (!this.directoryExists(dirPath)) {
+                fs.mkdirSync(dirPath, { recursive: true });
+            }
+        } catch (error) {
+            console.error(`ディレクトリ作成に失敗しました: ${dirPath}`, error);
+            vscode.window.showErrorMessage(`ディレクトリ作成に失敗しました: ${dirPath}。エラー: ${error instanceof Error ? error.message : '不明なエラー'}`);
+            throw error;
         }
     }
 
@@ -55,9 +61,15 @@ export class FileManager {
      * @param content ファイル内容
      */
     public createFile(filePath: string, content: string = ''): void {
-        const dirPath = path.dirname(filePath);
-        this.createDirectory(dirPath);
-        fs.writeFileSync(filePath, content);
+        try {
+            const dirPath = path.dirname(filePath);
+            this.createDirectory(dirPath);
+            fs.writeFileSync(filePath, content);
+        } catch (error) {
+            console.error(`ファイル作成に失敗しました: ${filePath}`, error);
+            vscode.window.showErrorMessage(`ファイル作成に失敗しました: ${filePath}。エラー: ${error instanceof Error ? error.message : '不明なエラー'}`);
+            throw error;
+        }
     }
 
     /**
@@ -91,7 +103,7 @@ export class FileManager {
             });
         } catch (error) {
             console.error(`ファイルを開けませんでした: ${filePath}`, error);
-            vscode.window.showErrorMessage(`ファイルを開けませんでした: ${filePath}`);
+            vscode.window.showErrorMessage(`ファイルを開けませんでした: ${filePath}。エラー: ${error instanceof Error ? error.message : '不明なエラー'}`);
             return undefined;
         }
     }    /**
